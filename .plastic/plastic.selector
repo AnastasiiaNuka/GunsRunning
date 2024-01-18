@@ -1,0 +1,4 @@
+repository "GunsRunning2@AnastasiiaNuka@cloud"
+  path "/"
+    br "/main"
+    co "/main"
