@@ -1,30 +1,47 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Scripting.APIUpdating;
 
 public class Player : MonoBehaviour
 {
-    SpriteRenderer spR;
+    [SerializeField] float speed;
+    [SerializeField] float rotationSpeed;
+    Rigidbody2D rb;
+    Vector2 moveVelocity;
     void Start()
     {
-        spR = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
     }
 
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            StartCoroutine(Fade()); 
-                }
+        PlayerRotation();
     }
 
-    IEnumerator Fade()
+    private void FixedUpdate()
     {
-        for (float i = 1; i > 0f; i-= Time.deltaTime)//создаем цикл в теение секунды меняется интенсивность у игрока игрок при нажатии на кнопку затухает
-        {
-            spR.color = new Color(1, 0, 0, i);
-            yield return null;
-        }
+        Move();
+    }
+
+    void Move()
+    { 
+    Vector2 moveInput = new Vector2(Input.GetAxisRaw("Horizontal"),Input.GetAxisRaw("Vertical"));
+
+        moveVelocity = moveInput.normalized * speed;
+        rb.MovePosition(rb.position + moveVelocity * Time.fixedDeltaTime);
+             
+    }
+
+
+    void PlayerRotation()
+    {
+        Vector2 dir = Camera.main.ScreenToViewportPoint(Input.mousePosition) - transform.position; //находим позицию курсора относительно игры и находим угол между мышь и поворотом игроа
+        float angle = Mathf.Atan2(dir.x, dir.y) * Mathf.Rad2Deg + 90; //преобразовывает вектор 2 во флоат и получаем угол
+        Quaternion rotatation = Quaternion.AngleAxis(angle, Vector3.forward);
+        transform.rotation = Quaternion.Slerp(transform.rotation, rotatation, rotationSpeed* Time.deltaTime);
+            
     }
 }
