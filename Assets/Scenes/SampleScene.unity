@@ -264,6 +264,7 @@ MonoBehaviour:
   minY: 5
   maxY: -5
   target: {fileID: 1148795495}
+  followSpeed: 5
 --- !u!4 &1148795495 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3723165149887550213, guid: 38c182ef8f707734fbbe2b82118354ff, type: 3}

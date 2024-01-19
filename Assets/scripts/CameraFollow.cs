@@ -8,9 +8,15 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] float minX, maxX, minY, maxY;
     [SerializeField] Transform target;
 
-    void Update()
+    [SerializeField] float followSpeed;
+
+    void FixedUpdate()
     {
-     
-        transform.position = new Vector3(Mathf.Clamp(target.position.x, minX, maxX), Mathf.Clamp(target.position.y, minY, maxY), -10);//камера позади всех обьектов и все были в сцене
+        if (!target) return;// если таргета нет
+       
+        transform.position = Vector3.Lerp(transform.position, new Vector3(Mathf.Clamp(target.position.x, minX, maxX), Mathf.Clamp(target.position.y, minY, maxY), -10), followSpeed * Time.fixedDeltaTime);
+        //transform.position = new Vector3(Mathf.Clamp(target.position.x, minX, maxX), Mathf.Clamp(target.position.y, minY, maxY), -10);//камера позади всех обьектов и все были в сцене
+
+
     }
 }
