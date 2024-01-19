@@ -13,17 +13,25 @@ public class Player : MonoBehaviour
 
     [SerializeField] GameObject bullet;
     [SerializeField] Transform shootPos;
+
+    [SerializeField] float timeBtwShoot;
+    float shootTimer = 0.5F ; //можем стрелять каждын 0ю5 секунд
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        shootTimer = timeBtwShoot;
     }
 
     
     void Update()
     {
+        shootTimer += Time.deltaTime;
+
         PlayerRotation();
-        if (Input.GetMouseButtonDown(0)) { //нажал ли клавишу для выстрела 
+        if (Input.GetMouseButtonDown(0) && shootTimer>= timeBtwShoot) { //нажал ли клавишу для выстрела 
             Shoot();
+            shootTimer = 0;
         }
     }
 
